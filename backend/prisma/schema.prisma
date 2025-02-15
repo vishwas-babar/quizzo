@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid()) // Unique user ID
+  username String @unique
+  password String // Hashed password
+  // quizzes  Quiz[] @relation("UserQuizzes") // One-to-many relation
+}
+
+model Quiz {
+  id          String   @id @default(uuid()) // Unique quiz ID
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+
+  // teacherId String // Foreign key for the user (teacher)
+  // teacher   User   @relation("UserQuizzes", fields: [teacherId], references: [id], onDelete: Cascade)
+}
